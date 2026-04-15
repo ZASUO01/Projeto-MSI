@@ -9,7 +9,13 @@ find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_executable(${PROJECT_NAME}
-        Source/Main.cpp)
+        Source/Main.cpp
+        Source/Game.cpp
+        Source/Game.h
+        Source/Utils/Math.cpp
+        Source/Utils/Math.h
+        Source/Utils/Random.cpp
+        Source/Utils/Random.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         include
