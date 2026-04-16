@@ -15,7 +15,9 @@ add_executable(${PROJECT_NAME}
         Source/Utils/Math.cpp
         Source/Utils/Math.h
         Source/Utils/Random.cpp
-        Source/Utils/Random.h)
+        Source/Utils/Random.h
+        Source/Renderer/Shader.cpp
+        Source/Renderer/Shader.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         include
