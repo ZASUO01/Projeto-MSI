@@ -17,7 +17,9 @@ add_executable(${PROJECT_NAME}
         Source/Utils/Random.cpp
         Source/Utils/Random.h
         Source/Renderer/Shader.cpp
-        Source/Renderer/Shader.h)
+        Source/Renderer/Shader.h
+        Source/Renderer/VertexArray.cpp
+        Source/Renderer/VertexArray.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         include
