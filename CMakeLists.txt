@@ -24,7 +24,9 @@ add_executable(${PROJECT_NAME}
         Source/Renderer/VertexArray.cpp
         Source/Renderer/VertexArray.h
         Source/Renderer/Renderer.cpp
-        Source/Renderer/Renderer.h)
+        Source/Renderer/Renderer.h
+        Source/Renderer/Mesh.cpp
+        Source/Renderer/Mesh.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         include

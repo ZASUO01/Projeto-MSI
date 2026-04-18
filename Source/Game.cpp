@@ -31,6 +31,14 @@ bool Game::Initialize(){
         return false;
     }
 
+    mRenderer = new Renderer(mWindow, RendererMode::TRIANGLES);
+    if (!mRenderer->Initialize(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+        SDL_Log("Failed to initialize renderer: %s", SDL_GetError());
+        return false;
+    }
+
+    auto mesh = mRenderer->GetMesh("../Assets/Models/Cube.object");
+
     mTicksCount = SDL_GetTicks();
 
     return true;
@@ -73,11 +81,19 @@ void Game::UpdateGame(const float deltaTime){
     // TODO
 }
 
-void Game::GenerateOutput(){
-    // TODO
+void Game::GenerateOutput() const {
+    mRenderer->Clear();
+
+    mRenderer->Draw();
+
+    mRenderer->Present();
 }
 
 void Game::Shutdown(){
+    mRenderer->Shutdown();
+    delete mRenderer;
+    mRenderer = nullptr;
+
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
 }
