@@ -16,10 +16,15 @@ add_executable(${PROJECT_NAME}
         Source/Utils/Math.h
         Source/Utils/Random.cpp
         Source/Utils/Random.h
+        Source/Utils/ObjectLoader.cpp
+        Source/Utils/ObjectLoader.h
+        External/tinyobjloader/tiny_obj_loader.h
         Source/Renderer/Shader.cpp
         Source/Renderer/Shader.h
         Source/Renderer/VertexArray.cpp
-        Source/Renderer/VertexArray.h)
+        Source/Renderer/VertexArray.h
+        Source/Renderer/Renderer.cpp
+        Source/Renderer/Renderer.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         include

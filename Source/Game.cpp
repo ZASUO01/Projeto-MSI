@@ -36,7 +36,6 @@ bool Game::Initialize(){
     return true;
 }
 
-
 void Game::RunLoop(){
     while (mIsRunning){
         // Calculate delta time in seconds
