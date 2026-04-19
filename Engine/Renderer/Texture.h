@@ -17,10 +17,10 @@ public:
 
     void SetActive(int index = 0) const;
 
-    int GetWidth() const { return mWidth; }
-    int GetHeight() const { return mHeight; }
+    [[nodiscard]] int GetWidth() const { return mWidth; }
+    [[nodiscard]] int GetHeight() const { return mHeight; }
 
-    unsigned int GetTextureID() const { return mTextureID; }
+    [[nodiscard]] unsigned int GetTextureID() const { return mTextureID; }
 
 private:
     unsigned int mTextureID;

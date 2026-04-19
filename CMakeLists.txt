@@ -20,6 +20,16 @@ add_library(Engine STATIC
         Engine/Utils/Random.h
         Engine/Renderer/Shader.cpp
         Engine/Renderer/Shader.h
+        Engine/Renderer/VertexArray.cpp
+        Engine/Renderer/VertexArray.h
+        Engine/Renderer/Mesh.cpp
+        Engine/Renderer/Mesh.h
+        Engine/Utils/ObjectLoader.cpp
+        Engine/Utils/ObjectLoader.h
+        Engine/Renderer/Texture.cpp
+        Engine/Renderer/Texture.h
+        Engine/Renderer/Renderer.cpp
+        Engine/Renderer/Renderer.h
 )
 
 target_link_libraries(Engine PUBLIC
@@ -30,9 +40,7 @@ target_link_libraries(Engine PUBLIC
 )
 
 target_include_directories(Engine PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Utils
-        ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Renderer
+        ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/External
 )
 

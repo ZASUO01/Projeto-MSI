@@ -5,6 +5,8 @@
 #include "Utils/Random.h"
 #include <SDL_image.h>
 
+#include "Renderer/Renderer.h"
+
 Game::Game(const GameConstants &gameConstants)
 :mRenderer(nullptr)
 ,mTicksCount(0)
@@ -72,6 +74,10 @@ void Game::GenerateOutput() const {
 }
 
 void Game::Shutdown(){
+    mRenderer->Shutdown();
+    delete mRenderer;
+    mRenderer = nullptr;
+
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
 }
@@ -106,6 +112,12 @@ bool Game::InitGameBase() {
 
     if (!mWindow){
         SDL_Log("Failed to create window: %s", SDL_GetError());
+        return false;
+    }
+
+    mRenderer = new Renderer(mWindow, RendererMode::TRIANGLES);
+    if (!mRenderer->Initialize(mGameConstants.WINDOW_WIDTH, mGameConstants.WINDOW_HEIGHT)) {
+        SDL_Log("Failed to initialize renderer: %s", SDL_GetError());
         return false;
     }
 
