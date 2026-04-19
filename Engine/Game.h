@@ -35,6 +35,7 @@ private:
 
     // Rendering stuff
     SDL_Window* mWindow;
+    class Renderer *mRenderer;
 
     // Track elapsed time since game start
     Uint32 mTicksCount;

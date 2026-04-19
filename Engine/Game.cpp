@@ -6,7 +6,8 @@
 #include <SDL_image.h>
 
 Game::Game(const GameConstants &gameConstants)
-:mTicksCount(0)
+:mRenderer(nullptr)
+,mTicksCount(0)
 ,mIsRunning(true)
 ,mGameConstants(gameConstants)
 {}
