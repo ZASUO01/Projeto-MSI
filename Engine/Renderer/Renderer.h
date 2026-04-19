@@ -36,6 +36,8 @@ public:
 private:
     bool LoadShaders();
 
+    static constexpr Vector4 CLEAR_COLOR{0.45f, 0.55f, 0.60f, 1.0f};
+
     // Shaders
     class Shader* mModelsShader;
 

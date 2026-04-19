@@ -3,15 +3,20 @@
 //
 #include "Game.h"
 #include "Utils/Random.h"
-#include <SDL_image.h>
-
 #include "Renderer/Renderer.h"
+#include "Actors/Actor.h"
+#include <SDL_image.h>
+#include <algorithm>
+#include <utility>
 
-Game::Game(const GameConstants &gameConstants)
-:mRenderer(nullptr)
+Game::Game(GameConstants gameConstants)
+:mWindow(nullptr)
+,mRenderer(nullptr)
 ,mTicksCount(0)
 ,mIsRunning(true)
-,mGameConstants(gameConstants)
+,mIsDebugging(false)
+,mUpdatingActors(false)
+,mGameConstants(std::move(gameConstants))
 {}
 
 bool Game::Initialize(){
@@ -48,10 +53,76 @@ void Game::RunLoop(){
         GenerateOutput();
 
         // Sleep to maintain frame rate
-        if (const int sleepTime = (1000 / mGameConstants.FPS) - (SDL_GetTicks() - mTicksCount); sleepTime > 0){
+        if (const int sleepTime = 1000 / mGameConstants.FPS - (SDL_GetTicks() - mTicksCount); sleepTime > 0){
             SDL_Delay(sleepTime);
         }
     }
+}
+
+void Game::Shutdown(){
+    // Remove actors
+    while (!mActors.empty()) {
+        delete mActors.back();
+    }
+
+    mRenderer->Shutdown();
+    delete mRenderer;
+    mRenderer = nullptr;
+
+    SDL_DestroyWindow(mWindow);
+    SDL_Quit();
+}
+
+void Game::UpdateActors(const float deltaTime){
+    mUpdatingActors = true;
+    for (const auto actor : mActors){
+        actor->Update(deltaTime);
+    }
+    mUpdatingActors = false;
+
+    if (!mPendingActors.empty()) {
+        mActors.insert(mActors.end(), mPendingActors.begin(), mPendingActors.end());
+        mPendingActors.clear();
+    }
+
+    const auto it = std::ranges::remove_if(mActors, [](const Actor* actor) {
+        if (actor->GetState() == ActorState::Destroy) {
+            delete actor;
+            return true;
+        }
+        return false;
+    }).begin();
+
+    mActors.erase(it, mActors.end());
+}
+
+void Game::AddActor(Actor* actor){
+    if (mUpdatingActors){
+        mPendingActors.emplace_back(actor);
+    }
+    else{
+        actor->mGameIndex = static_cast<int>(mActors.size());
+        mActors.emplace_back(actor);
+    }
+}
+
+void Game::RemoveActor(Actor* actor){
+    if (actor->mGameIndex < 0 || actor->mGameIndex >= mActors.size()) {
+        // if not in mActor, maybe is in mPendingActors
+        // use erase patern as we expect just few members in mPendingActors
+        std::erase(mPendingActors, actor);
+        return;
+    }
+
+    const int indexToRemove = actor->mGameIndex;
+    Actor* lastActor = mActors.back();
+
+    mActors[indexToRemove] = lastActor;
+    lastActor->mGameIndex = indexToRemove;
+
+    mActors.pop_back();
+
+    actor->mGameIndex = -1;
 }
 
 void Game::ProcessInput(){
@@ -61,27 +132,24 @@ void Game::ProcessInput(){
             case SDL_QUIT:
                 Quit();
                 break;
+            default:
+                break;
         }
     }
 }
 
 void Game::UpdateGame(const float deltaTime){
-    // TODO
+    // Update all actors and pending actors
+    UpdateActors(deltaTime);
 }
 
 void Game::GenerateOutput() const {
-    // TODO
+    Renderer::Clear();
+
+    mRenderer->Draw();
+
+    mRenderer->Present();
 }
-
-void Game::Shutdown(){
-    mRenderer->Shutdown();
-    delete mRenderer;
-    mRenderer = nullptr;
-
-    SDL_DestroyWindow(mWindow);
-    SDL_Quit();
-}
-
 
 bool Game::InitSDLSystems() {
     // Init SDL Image
@@ -106,8 +174,8 @@ bool Game::InitGameBase() {
         mGameConstants.WINDOW_TITLE.c_str(),
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        mGameConstants.WINDOW_WIDTH,
-        mGameConstants.WINDOW_HEIGHT,
+        static_cast<int>(mGameConstants.WINDOW_WIDTH),
+        static_cast<int>(mGameConstants.WINDOW_HEIGHT),
         SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
     if (!mWindow){

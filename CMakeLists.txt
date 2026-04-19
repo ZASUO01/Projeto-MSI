@@ -30,6 +30,8 @@ add_library(Engine STATIC
         Engine/Renderer/Texture.h
         Engine/Renderer/Renderer.cpp
         Engine/Renderer/Renderer.h
+        Engine/Actors/Actor.cpp
+        Engine/Actors/Actor.h
 )
 
 target_link_libraries(Engine PUBLIC
@@ -48,6 +50,8 @@ add_executable(${PROJECT_NAME}
         Main.cpp
         Source/GameMain.cpp
         Source/GameMain.h
+        Source/Actors/Cube.cpp
+        Source/Actors/Cube.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Engine)

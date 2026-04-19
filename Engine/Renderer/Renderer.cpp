@@ -59,7 +59,7 @@ bool Renderer::Initialize(const float width, const float height){
  }
 
  // Set the clear color to light blue
- glClearColor(0.45f, 0.55f, 0.60f, 1.0f);
+ glClearColor(CLEAR_COLOR.x, CLEAR_COLOR.y, CLEAR_COLOR.z, CLEAR_COLOR.w);
 
  return true;
 }

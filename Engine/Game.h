@@ -4,23 +4,29 @@
 #pragma once
 #include <string>
 #include <SDL2/SDL.h>
+#include <vector>
 
 struct GameConstants {
-    int WINDOW_WIDTH;
-    int WINDOW_HEIGHT;
+    float WINDOW_WIDTH;
+    float WINDOW_HEIGHT;
     int FPS;
     std::string WINDOW_TITLE;
 };
 
 class Game {
 public:
-    explicit Game(const GameConstants &gameConstants);
+    explicit Game(GameConstants gameConstants);
     virtual ~Game() = default;
 
     bool Initialize();
     void RunLoop();
     void Shutdown();
     void Quit() { mIsRunning = false; }
+
+    // Actor functions
+    void UpdateActors(float deltaTime);
+    void AddActor(class Actor* actor);
+    void RemoveActor(Actor* actor);
 
 protected:
     virtual bool InitGameMain() = 0;
@@ -33,6 +39,10 @@ private:
     void UpdateGame(float deltaTime);
     void GenerateOutput() const;
 
+    // Actors
+    std::vector<Actor*> mActors;
+    std::vector<Actor*> mPendingActors;
+
     // Rendering stuff
     SDL_Window* mWindow;
     class Renderer *mRenderer;
@@ -42,5 +52,7 @@ private:
 
     // Game control variables
     bool mIsRunning;
+    bool mIsDebugging;
+    bool mUpdatingActors;
     GameConstants mGameConstants;
 };
