@@ -3,6 +3,7 @@
 //
 #include "Game.h"
 #include "./Utils/Random.h"
+#include <SDL_image.h>
 
 Game::Game()
         :mWindow(nullptr)
@@ -18,6 +19,13 @@ bool Game::Initialize(){
         return false;
     }
 
+    // Init SDL Image
+    if (constexpr int imgFlags = IMG_INIT_PNG; !(IMG_Init(imgFlags) & imgFlags)){
+        SDL_Log("Unable to initialize SDL_image: %s", IMG_GetError());
+        return false;
+    }
+
+
     mWindow = SDL_CreateWindow(
         "Arcana Digitalis",
         SDL_WINDOWPOS_CENTERED,
@@ -31,11 +39,16 @@ bool Game::Initialize(){
         return false;
     }
 
+    mRenderer = new Renderer(mWindow, RendererMode::TRIANGLES);
+    if (!mRenderer->Initialize(WINDOW_WIDTH, WINDOW_HEIGHT)) {
+        SDL_Log("Failed to initialize renderer: %s", SDL_GetError());
+        return false;
+    }
+
     mTicksCount = SDL_GetTicks();
 
     return true;
 }
-
 
 void Game::RunLoop(){
     while (mIsRunning){
@@ -74,11 +87,19 @@ void Game::UpdateGame(const float deltaTime){
     // TODO
 }
 
-void Game::GenerateOutput(){
-    // TODO
+void Game::GenerateOutput() const {
+    mRenderer->Clear();
+
+    mRenderer->Draw();
+
+    mRenderer->Present();
 }
 
 void Game::Shutdown(){
+    mRenderer->Shutdown();
+    delete mRenderer;
+    mRenderer = nullptr;
+
     SDL_DestroyWindow(mWindow);
     SDL_Quit();
 }

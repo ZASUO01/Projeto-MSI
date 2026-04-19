@@ -4,6 +4,7 @@
 
 #pragma once
 #include <SDL.h>
+#include "Renderer/Renderer.h"
 
 class Game {
 public:
@@ -22,10 +23,11 @@ public:
 private:
     void ProcessInput();
     void UpdateGame(float deltaTime);
-    void GenerateOutput();
+    void GenerateOutput() const;
 
     // Rendering stuff
     SDL_Window* mWindow;
+    Renderer *mRenderer;
 
     // Track elapsed time since game start
     Uint32 mTicksCount;
