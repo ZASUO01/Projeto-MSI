@@ -5,6 +5,7 @@ set(PROJECT_NAME "arcana_digitalis")
 project(${PROJECT_NAME})
 
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
@@ -26,7 +27,9 @@ add_executable(${PROJECT_NAME}
         Source/Renderer/Renderer.cpp
         Source/Renderer/Renderer.h
         Source/Renderer/Mesh.cpp
-        Source/Renderer/Mesh.h)
+        Source/Renderer/Mesh.h
+        Source/Renderer/Texture.cpp
+        Source/Renderer/Texture.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         include
@@ -37,4 +40,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         GLEW::GLEW
         OpenGL::GL
         SDL2::SDL2
+        SDL2_image::SDL2_image
 )

@@ -3,6 +3,7 @@
 //
 #include "Game.h"
 #include "./Utils/Random.h"
+#include <SDL_image.h>
 
 Game::Game()
         :mWindow(nullptr)
@@ -17,6 +18,13 @@ bool Game::Initialize(){
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return false;
     }
+
+    // Init SDL Image
+    if (constexpr int imgFlags = IMG_INIT_PNG; !(IMG_Init(imgFlags) & imgFlags)){
+        SDL_Log("Unable to initialize SDL_image: %s", IMG_GetError());
+        return false;
+    }
+
 
     mWindow = SDL_CreateWindow(
         "Arcana Digitalis",
@@ -36,8 +44,6 @@ bool Game::Initialize(){
         SDL_Log("Failed to initialize renderer: %s", SDL_GetError());
         return false;
     }
-
-    auto mesh = mRenderer->GetMesh("../Assets/Models/Cube.object");
 
     mTicksCount = SDL_GetTicks();
 

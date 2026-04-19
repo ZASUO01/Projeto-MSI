@@ -9,7 +9,7 @@
 
 #include "Shader.h"
 #include "Mesh.h"
-#include "VertexArray.h"
+#include "Texture.h"
 
 Renderer::Renderer(SDL_Window *window, const RendererMode renderMode)
 : mModelsShader(nullptr)
@@ -81,6 +81,12 @@ void Renderer::UnloadData(){
   delete val;
  }
  mMeshes.clear();
+
+ for (const auto val: mTextures | std::views::values) {
+  val->Unload();
+  delete val;
+ }
+ mTextures.clear();
 }
 
 
@@ -89,7 +95,7 @@ void Renderer::Clear(){
  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Draw() {
+void Renderer::Draw() const {
  // Enable depth buffering/disable alpha blend
  glEnable(GL_DEPTH_TEST);
  glDisable(GL_BLEND);
@@ -100,19 +106,7 @@ void Renderer::Draw() {
  // Update view-projection matrix
  mModelsShader->SetMatrixUniform("viewProjection", mView * mProjection);
 
- for (auto [name, mesh]: mMeshes) {
-   mModelsShader->SetMatrixUniform("modelTransform", Matrix4::Identity);
-
-   const auto va = mesh->GetVertexArray();
-   va->SetActive();
-
-   if (mRenderMode == RendererMode::TRIANGLES) {
-    glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
-   }else {
-    glDrawElements(GL_LINES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
-   }
- }
-
+ // DRAW
 
  // Disable depth buffering
  glDisable(GL_DEPTH_TEST);
@@ -144,6 +138,25 @@ Mesh* Renderer::GetMesh(const std::string& fileName){
  }
 
  return m;
+}
+
+Texture* Renderer::GetTexture(const std::string& fileName) {
+ Texture* tex = nullptr;
+ if (const auto iter = mTextures.find(fileName); iter != mTextures.end()){
+  tex = iter->second;
+ }
+ else{
+  tex = new Texture();
+
+  if (tex->Load(fileName)){
+   mTextures.emplace(fileName, tex);
+   return tex;
+  }
+
+   delete tex;
+   return nullptr;
+ }
+ return tex;
 }
 
 bool Renderer::LoadShaders(){

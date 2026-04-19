@@ -24,10 +24,11 @@ public:
 	void UnloadData();
 
 	static void Clear();
-	void Draw();
+	void Draw() const;
 	void Present() const;
 
 	class Mesh* GetMesh(const std::string& fileName);
+	class Texture* GetTexture(const std::string& fileName);
 
 	void SetViewMatrix(const Matrix4& view) { mView = view; }
 	void SetProjectionMatrix(const Matrix4& proj) { mProjection = proj; }
@@ -48,6 +49,7 @@ private:
 
 	// Maps of loaded resources
 	std::unordered_map<std::string, Mesh*> mMeshes;
+	std::unordered_map<std::string, Texture*> mTextures;
 
     // Width/height of screem
     float mScreenWidth;
