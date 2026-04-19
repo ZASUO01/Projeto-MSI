@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 4.2)
+
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(PROJECT_NAME "arcana_digitalis")
 project(${PROJECT_NAME})
@@ -9,36 +11,47 @@ find_package(SDL2_image REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
-add_executable(${PROJECT_NAME}
-        Source/Main.cpp
-        Source/Game.cpp
-        Source/Game.h
-        Source/Utils/Math.cpp
-        Source/Utils/Math.h
-        Source/Utils/Random.cpp
-        Source/Utils/Random.h
-        Source/Utils/ObjectLoader.cpp
-        Source/Utils/ObjectLoader.h
-        External/tinyobjloader/tiny_obj_loader.h
-        Source/Renderer/Shader.cpp
-        Source/Renderer/Shader.h
-        Source/Renderer/VertexArray.cpp
-        Source/Renderer/VertexArray.h
-        Source/Renderer/Renderer.cpp
-        Source/Renderer/Renderer.h
-        Source/Renderer/Mesh.cpp
-        Source/Renderer/Mesh.h
-        Source/Renderer/Texture.cpp
-        Source/Renderer/Texture.h)
-
-target_include_directories(${PROJECT_NAME} PUBLIC
-        include
-        External
+add_library(Engine STATIC
+        Engine/Game.cpp
+        Engine/Game.h
+        Engine/Utils/Math.cpp
+        Engine/Utils/Math.h
+        Engine/Utils/Random.cpp
+        Engine/Utils/Random.h
+        Engine/Renderer/Shader.cpp
+        Engine/Renderer/Shader.h
+        Engine/Renderer/VertexArray.cpp
+        Engine/Renderer/VertexArray.h
+        Engine/Renderer/Mesh.cpp
+        Engine/Renderer/Mesh.h
+        Engine/Utils/ObjectLoader.cpp
+        Engine/Utils/ObjectLoader.h
+        Engine/Renderer/Texture.cpp
+        Engine/Renderer/Texture.h
+        Engine/Renderer/Renderer.cpp
+        Engine/Renderer/Renderer.h
+        Engine/Actors/Actor.cpp
+        Engine/Actors/Actor.h
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE
+target_link_libraries(Engine PUBLIC
         GLEW::GLEW
         OpenGL::GL
         SDL2::SDL2
         SDL2_image::SDL2_image
 )
+
+target_include_directories(Engine PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/External
+)
+
+add_executable(${PROJECT_NAME}
+        Main.cpp
+        Source/GameMain.cpp
+        Source/GameMain.h
+        Source/Actors/Cube.cpp
+        Source/Actors/Cube.h
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE Engine)
