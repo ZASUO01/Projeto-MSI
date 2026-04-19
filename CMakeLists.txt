@@ -10,26 +10,16 @@ find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
 add_executable(${PROJECT_NAME}
-        Source/Main.cpp
-        Source/Game.cpp
-        Source/Game.h
-        Source/Utils/Math.cpp
-        Source/Utils/Math.h
-        Source/Utils/Random.cpp
-        Source/Utils/Random.h
-        Source/Utils/ObjectLoader.cpp
-        Source/Utils/ObjectLoader.h
-        External/tinyobjloader/tiny_obj_loader.h
-        Source/Renderer/Shader.cpp
-        Source/Renderer/Shader.h
-        Source/Renderer/VertexArray.cpp
-        Source/Renderer/VertexArray.h
-        Source/Renderer/Renderer.cpp
-        Source/Renderer/Renderer.h
-        Source/Renderer/Mesh.cpp
-        Source/Renderer/Mesh.h
-        Source/Renderer/Texture.cpp
-        Source/Renderer/Texture.h)
+        Main.cpp
+        Engine/Game.cpp
+        Engine/Game.h
+        Engine/Utils/Math.cpp
+        Engine/Utils/Math.h
+        Engine/Utils/Random.cpp
+        Engine/Utils/Random.h
+        Source/GameMain.cpp
+        Source/GameMain.h
+        )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         include
