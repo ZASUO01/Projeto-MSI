@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <SDL2/SDL.h>
+#include <vector>
 
 #include "../Utils/Math.h"
 
@@ -29,9 +30,13 @@ public:
 
     class Mesh* GetMesh(const std::string& fileName);
     class Texture* GetTexture(const std::string& fileName);
+    class Model* GetModel(const std::string& fileName);
 
     void SetViewMatrix(const Matrix4& view) { mView = view; }
     void SetProjectionMatrix(const Matrix4& proj) { mProjection = proj; }
+
+    void AddModelComponent(class ModelComponent* modelComponent);
+    void RemoveModelComponent(size_t componentIndex);
 
 private:
     bool LoadShaders();
@@ -52,6 +57,10 @@ private:
     // Maps of loaded resources
     std::unordered_map<std::string, Mesh*> mMeshes;
     std::unordered_map<std::string, Texture*> mTextures;
+    std::unordered_map<std::string, Model*> mModels;
+
+    // Lists of components to draw
+    std::vector<ModelComponent*> mModelComponents;
 
     // Width/height of screem
     float mScreenWidth;

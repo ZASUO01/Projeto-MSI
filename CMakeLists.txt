@@ -32,6 +32,10 @@ add_library(Engine STATIC
         Engine/Renderer/Renderer.h
         Engine/Actors/Actor.cpp
         Engine/Actors/Actor.h
+        Engine/Utils/JsonUtil.cpp
+        Engine/Utils/JsonUtil.h
+        Engine/Renderer/Model.cpp
+        Engine/Renderer/Model.h
 )
 
 target_link_libraries(Engine PUBLIC
@@ -52,6 +56,11 @@ add_executable(${PROJECT_NAME}
         Source/GameMain.h
         Source/Actors/Cube.cpp
         Source/Actors/Cube.h
+        Engine/Components/Component.cpp
+        Engine/Components/Component.h
+        Engine/Components/Drawing/ModelComponent.cpp
+        Engine/Components/Drawing/ModelComponent.h
+        External/nlohmann/json.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Engine)

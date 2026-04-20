@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <SDL_stdinc.h>
+#include <vector>
 #include "../Utils/Math.h"
 
 enum class ActorState{
@@ -45,6 +46,22 @@ public:
     // Game getter
     Game* GetGame() const { return mGame; }
 
+    // Components getter
+    const std::vector<class Component*>& GetComponents() const { return mComponents; }
+
+    // Returns component of type T, or null if doesn't exist
+    template <typename T>
+    T* GetComponent() const {
+        for (auto c : mComponents){
+            T* t = dynamic_cast<T*>(c);
+            if (t != nullptr){
+                return t;
+            }
+        }
+
+        return nullptr;
+    }
+
 protected:
     Game* mGame;
 
@@ -61,6 +78,9 @@ protected:
     Vector3 mScale;
     Vector3 mRotation;
 
+    // Components
+    std::vector<Component*> mComponents;
+
     Matrix4 mWorldTransform;
     bool mIsTransformDirty;
 
@@ -68,5 +88,10 @@ private:
     // index of this actor in the game actors list. Used to fast removal.
     int mGameIndex;
 
+    // Adds component to Actor (this is automatically called
+    // in the component constructor)
+    void AddComponent( Component* c);
+
 friend class Game;
+friend class Component;
 };
