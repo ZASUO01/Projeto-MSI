@@ -28,9 +28,14 @@ public:
     void AddActor(class Actor* actor);
     void RemoveActor(Actor* actor);
 
+    // Getters
+    class Renderer* GetRenderer() const { return mRenderer; }
+
 protected:
     virtual bool InitGameMain() = 0;
 
+    // Rendering stuff
+    Renderer *mRenderer;
 private:
     static bool InitSDLSystems();
     bool InitGameBase();
@@ -45,7 +50,7 @@ private:
 
     // Rendering stuff
     SDL_Window* mWindow;
-    class Renderer *mRenderer;
+
 
     // Track elapsed time since game start
     Uint32 mTicksCount;

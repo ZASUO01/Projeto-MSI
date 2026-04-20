@@ -6,10 +6,11 @@
 
 #include <ranges>
 #include <GL/glew.h>
-
+#include "Model.h"
 #include "Shader.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "../Components/Drawing/ModelComponent.h"
 
 Renderer::Renderer(SDL_Window *window, const RendererMode renderMode)
 : mModelsShader(nullptr)
@@ -87,6 +88,11 @@ void Renderer::UnloadData(){
   delete val;
  }
  mTextures.clear();
+
+ for (const auto val: mModels | std::views::values) {
+  delete val;
+ }
+ mModels.clear();
 }
 
 
@@ -107,6 +113,9 @@ void Renderer::Draw() const {
  mModelsShader->SetMatrixUniform("viewProjection", mView * mProjection);
 
  // DRAW
+ for (const auto mc: mModelComponents) {
+   mc->Draw(mModelsShader, mRenderMode);
+ }
 
  // Disable depth buffering
  glDisable(GL_DEPTH_TEST);
@@ -119,6 +128,25 @@ void Renderer::Present() const {
  // Swap the buffers
  SDL_GL_SwapWindow(mWindow);
 }
+
+void Renderer::AddModelComponent(ModelComponent *modelComponent) {
+ modelComponent->SetRendererIndex(mModelComponents.size());
+ mModelComponents.emplace_back(modelComponent);
+}
+
+void Renderer::RemoveModelComponent(const size_t componentIndex) {
+  if (componentIndex >= mModelComponents.size()) {
+    return;
+  }
+
+  if (componentIndex < mModelComponents.size() - 1) {
+   mModelComponents[componentIndex] = mModelComponents.back();
+   mModelComponents[componentIndex]->SetRendererIndex(componentIndex);
+  }
+
+  mModelComponents.pop_back();
+}
+
 
 Mesh* Renderer::GetMesh(const std::string& fileName){
  Mesh* m = nullptr;
@@ -158,6 +186,26 @@ Texture* Renderer::GetTexture(const std::string& fileName) {
  }
  return tex;
 }
+
+Model* Renderer::GetModel(const std::string& fileName) {
+ Model* model = nullptr;
+ if (const auto iter = mModels.find(fileName); iter != mModels.end()){
+  model = iter->second;
+ }
+ else{
+  model = new Model();
+
+  if (model->LoadFromJson(fileName, this)){
+   mModels.emplace(fileName, model);
+   return model;
+  }
+
+  delete model;
+  return nullptr;
+ }
+ return model;
+}
+
 
 bool Renderer::LoadShaders(){
  // Create basic model shader

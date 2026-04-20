@@ -3,6 +3,8 @@
 //
 #include "Actor.h"
 #include "../Game.h"
+#include "../Components/Component.h"
+#include <algorithm>
 
 Actor::Actor(Game* game)
         : mGame(game)
@@ -45,4 +47,11 @@ const Matrix4& Actor::GetWorldTransform(){
     }
 
     return mWorldTransform;
+}
+
+void Actor::AddComponent(Component* c){
+    mComponents.emplace_back(c);
+    std::ranges::sort(mComponents, [](const Component* a, const Component* b) {
+        return a->GetUpdateOrder() < b->GetUpdateOrder();
+    });
 }

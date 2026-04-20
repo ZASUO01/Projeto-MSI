@@ -8,31 +8,32 @@ v  0.5 -0.5 -0.5
 v  0.5  0.5 -0.5
 v -0.5  0.5 -0.5
 
-# Coordenadas UV (Mapeadas para uma grade 3x2 ou similar)
+# Coordenadas UV Modificadas (Textura Inteira 1x1)
+
 vt 0.0 0.0
-vt 0.33 0.0
-vt 0.33 0.5
-vt 0.0 0.5
-vt 0.33 0.0
-vt 0.66 0.0
-vt 0.66 0.5
-vt 0.33 0.5
-vt 0.66 0.0
 vt 1.0 0.0
-vt 1.0 0.5
-vt 0.66 0.5
-vt 0.0 0.5
-vt 0.33 0.5
-vt 0.33 1.0
-vt 0.0 1.0
-vt 0.33 0.5
-vt 0.66 0.5
-vt 0.66 1.0
-vt 0.33 1.0
-vt 0.66 0.5
-vt 1.0 0.5
 vt 1.0 1.0
-vt 0.66 1.0
+vt 0.0 1.0
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
 
 # Normais
 vn  0 0  1

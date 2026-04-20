@@ -1,0 +1,8 @@
+{
+  "name": "Cube",
+  "objectFile": "../Assets/Models/Cube.object",
+  "textureFiles": [
+    "../Assets/Models/Cube_Purple.png",
+    "../Assets/Models/Cube_Red.png"
+  ]
+}
