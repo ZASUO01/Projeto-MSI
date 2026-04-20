@@ -10,7 +10,7 @@
 #include "../../Renderer/Mesh.h"
 #include <GL/glew.h>
 #include "../../Renderer/Shader.h"
-#include "Engine/Game.h"
+#include "Game.h"
 
 ModelComponent::ModelComponent(Actor* owner)
     : Component(owner)
