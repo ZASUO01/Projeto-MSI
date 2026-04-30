@@ -2,21 +2,22 @@
 // Created by pedro-souza on 19/04/2026.
 //
 
+
 #include "Source/GameMain.h"
 
 int main() {
-    const GameConstants constants = {
+    constexpr GameConstants constants = {
         1024,
         768,
         60,
         "Arcana Digitalis"
     };
 
-    GameMain game(constants);
-    if (game.Initialize()) {
-        game.RunLoop();
+    GameMain gameMain(constants);
+    if (gameMain.Initialize()) {
+        gameMain.RunLoop();
     }
-    game.Shutdown();
+    gameMain.Shutdown();
 
     return 0;
 }

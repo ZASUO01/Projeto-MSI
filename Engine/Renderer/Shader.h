@@ -1,44 +1,48 @@
 //
-// Created by pedro-souza on 16/04/2026.
+// Created by pedro-souza on 28/04/2026.
 //
-
 #pragma once
-#include <GL/glew.h>
 #include <string>
+#include <unordered_map>
+#include <GL/glew.h>
 #include "../Utils/Math.h"
 
-class Shader{
+/**
+ * It contains metadata from a shader uniform variable.
+ */
+struct UniformInfo {
+    GLint location;
+    GLenum type;
+};
+
+class Shader {
 public:
     Shader();
     ~Shader() = default;
 
-    // Load shader of the specified name, excluding
-    // the .frag/.vert extension
-    bool Load(const std::string& name);
+    bool Load(const std::string &name);
     void Unload();
 
-    // Set this as the active shader program
     void SetActive() const;
 
-    // Sets a Vector / Matrix uniform
-    void SetVectorUniform (const char* name, const Vector2& vector) const;
-    void SetVectorUniform (const char* name, const Vector3& vector) const;
-    void SetVectorUniform (const char* name, const Vector4& vector) const;
-    void SetMatrixUniform(const char* name, const Matrix4& matrix) const;
-    void SetFloatUniform(const char* name, float value) const;
-    void SetTextureUniform(const char *name, int value) const;
+    GLint GetUniformLocation(const std::string &name) const;
 
+    static void SetVectorUniform (GLint location, const Vector2& vector);
+    static void SetVectorUniform (GLint location, const Vector3& vector);
+    static void SetVectorUniform (GLint location, const Vector4& vector);
+    void SetMatrixUniform(GLint location, const Matrix4& matrix) const;
+    void SetFloatUniform(GLint location, float value) const;
+    void SetTextureUniform(GLint location, int value) const;
 private:
-    // Tries to compile the specified shader
-    static bool CompileShader(const std::string& fileName, GLenum shaderType, GLuint& outShader);
+    void IntrospectUniforms();
 
-    // Tests whether shader compiled successfully
+    static bool CompileShader(const std::string &fileName, GLenum shaderType, GLuint &outShader);
     static bool IsCompiled(GLuint shader);
-    // Tests whether vertex/fragment programs link
     [[nodiscard]] bool IsValidProgram() const;
 
-    // Store the shader object IDs
     GLuint mVertexShader;
-    GLuint mFragShader;
+    GLuint mFragmentShader;
     GLuint mShaderProgram;
-};
+
+    std::unordered_map<std::string, UniformInfo> mUniforms;
+ };

@@ -1,9 +1,9 @@
 //
-// Created by pedro-souza on 18/04/2026.
+// Created by pedro-souza on 28/04/2026.
 //
-#pragma once
+
 #include <string>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 class Texture{
 public:

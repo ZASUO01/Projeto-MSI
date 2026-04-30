@@ -10,10 +10,9 @@ add_subdirectory("Engine" "${CMAKE_CURRENT_BINARY_DIR}/Engine")
 
 add_executable(${PROJECT_NAME}
         Main.cpp
-        Source/GameMain.cpp
         Source/GameMain.h
-        Source/Actors/Cube.cpp
-        Source/Actors/Cube.h
+        Source/GameMain.cpp
+
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Engine)
